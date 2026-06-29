@@ -230,7 +230,7 @@ class Element_Tools extends Base_Tools {
 
 		return Tool_Registry::success_result(
 			array( 'inserted_root_ids' => $root_ids, 'elements' => $result ),
-			__( 'Elemento inserido.', 'marreira-mcp-bricks' )
+			__( 'Elemento inserido.', 'marreira-mcp-bricks' ) . self::code_warning( $subtree )
 		);
 	}
 

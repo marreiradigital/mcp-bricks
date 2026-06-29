@@ -174,7 +174,7 @@
 		return '<div class="mmb-grid cols-2">' +
 			'<section class="mmb-card"><h2>Proteções</h2><p class="mmb-hint">Aplicadas a cada requisição. Salvas automaticamente.</p>' +
 			toggle( 'https_only', 'Exigir HTTPS', 'Recusa chamadas sem TLS.', st.https_only ) +
-			toggle( 'block_code', 'Bloquear execução de código (anti-RCE)', 'A IA não pode criar elementos Code/SVG com código nem scripts.', st.block_code ) +
+			toggle( 'block_code', 'Bloquear elementos de código (anti-RCE)', 'Ligado: recusa qualquer elemento de código. Desligado: a IA pode criar código, mas SEM assinatura — você precisa assiná-lo no editor do Bricks (Sign code) para que execute. Injeção de script/{echo} continua sempre bloqueada.', st.block_code ) +
 			'<div class="mmb-field"><label for="mmb-rl">Limite de requisições</label>' +
 			'<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">' +
 			'<input type="number" min="0" id="mmb-rl" value="' + st.rate_limit + '"> <span class="mmb-toggle-sub">por</span> ' +

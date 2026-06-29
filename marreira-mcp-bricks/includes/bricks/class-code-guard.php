@@ -75,46 +75,78 @@ class Code_Guard {
 	 * @return true|WP_Error
 	 */
 	public static function inspect_elements( $elements ) {
-		if ( ! self::is_blocking() ) {
-			return true;
-		}
-
 		if ( ! is_array( $elements ) ) {
 			return true;
 		}
+
+		$blocking = self::is_blocking();
 
 		foreach ( $elements as $element ) {
 			if ( ! is_array( $element ) ) {
 				continue;
 			}
 
-			$name = isset( $element['name'] ) ? (string) $element['name'] : '';
-			if ( in_array( $name, self::FORBIDDEN_ELEMENTS, true ) ) {
-				return self::violation(
-					sprintf(
-						/* translators: %s: element name */
-						__( 'Elemento que executa codigo recusado: "%s". A IA nao pode criar/editar codigo executavel.', 'marreira-mcp-bricks' ),
-						$name
-					)
-				);
-			}
+			$name     = isset( $element['name'] ) ? (string) $element['name'] : '';
+			$settings = isset( $element['settings'] ) && is_array( $element['settings'] ) ? $element['settings'] : array();
 
-			// SVG com codigo embutido (campo "code" dentro do svg).
-			if ( 'svg' === $name && isset( $element['settings']['code'] ) ) {
-				return self::violation(
-					__( 'Elemento SVG com codigo embutido recusado.', 'marreira-mcp-bricks' )
-				);
-			}
-
-			if ( isset( $element['settings'] ) && is_array( $element['settings'] ) ) {
-				$check = self::inspect_settings( $element['settings'] );
-				if ( is_wp_error( $check ) ) {
-					return $check;
+			// Elemento de codigo (ou SVG com codigo). Quando o anti-RCE esta
+			// LIGADO, e recusado. Quando DESLIGADO, e PERMITIDO porem inerte: a
+			// IA nunca consegue assinar (a `signature` e removida pelo Sanitizer),
+			// e o Bricks nao executa codigo nao-assinado. O usuario precisa abrir
+			// no editor e assinar ("Sign code") para que rode.
+			if ( in_array( $name, self::FORBIDDEN_ELEMENTS, true ) || ( 'svg' === $name && isset( $settings['code'] ) ) ) {
+				if ( $blocking ) {
+					return self::violation(
+						__( 'Elemento de codigo recusado: o bloqueio anti-RCE esta ligado. Desligue-o no painel para permitir criar codigo (que entra SEM assinatura, exigindo assinatura manual no editor do Bricks).', 'marreira-mcp-bricks' )
+					);
 				}
+				// Permitido e inerte: nao escaneia o conteudo do proprio codigo.
+				continue;
+			}
+
+			// Demais elementos: injecao de codigo NUNCA e permitida (nao ha etapa
+			// de assinatura que os proteja), independente do toggle anti-RCE.
+			$check = self::inspect_settings( $settings );
+			if ( is_wp_error( $check ) ) {
+				return $check;
 			}
 		}
 
 		return true;
+	}
+
+	/**
+	 * Indica se a arvore contem algum elemento de codigo (para avisar o usuario).
+	 *
+	 * @param array $elements Arvore plana.
+	 * @return bool
+	 */
+	public static function contains_code( $elements ) {
+		if ( ! is_array( $elements ) ) {
+			return false;
+		}
+		foreach ( $elements as $element ) {
+			if ( ! is_array( $element ) ) {
+				continue;
+			}
+			$name = isset( $element['name'] ) ? (string) $element['name'] : '';
+			if ( 'code' === $name ) {
+				return true;
+			}
+			if ( 'svg' === $name && isset( $element['settings']['code'] ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Aviso a ser anexado ao resultado quando ha elemento de codigo.
+	 *
+	 * @return string
+	 */
+	public static function sign_warning() {
+		return __( 'ATENCAO: ha elemento(s) de codigo inseridos SEM assinatura. Eles NAO sao executados ate que voce os abra no editor do Bricks e clique em "Sign code" (Codigo > Assinar). Sem assinatura, o Bricks exibe apenas um placeholder.', 'marreira-mcp-bricks' );
 	}
 
 	/**

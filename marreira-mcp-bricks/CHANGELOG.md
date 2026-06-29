@@ -10,6 +10,32 @@ o header `Version:` do arquivo principal, o `Stable tag:` do `readme.txt` e
 uma nova entrada neste arquivo (espelhada na seção `== Changelog ==` do
 `readme.txt`).
 
+## [0.3.0] - 2026-06-29
+
+### Adicionado
+- **Elemento de código com assinatura manual.** Com o toggle **"Bloquear
+  elementos de código"** desligado, a IA pode **criar** o elemento `code` — mas
+  ele entra **sem assinatura**, e o Bricks não executa código não-assinado. As
+  tools (`create_bricks_page`, `update_bricks_page`, `insert_element`,
+  `create_template`, `update_template`) retornam um **aviso** instruindo o
+  usuário a abrir no editor do Bricks e clicar **"Sign code"** para executar.
+
+### Segurança
+- Qualquer `signature` enviada pela IA é **sempre descartada** pelo Sanitizer —
+  só um humano autenticado pode assinar código no Bricks.
+- Injeção de script/HTML executável, tags `{echo:`/`{do_action:` e scripts em
+  page settings continuam **sempre bloqueados** (não há etapa de assinatura que
+  os proteja), independentemente do toggle.
+
+### Documentação
+- `SKILL.md` (raiz + cópia empacotada) documenta o fluxo de código + assinatura.
+- `README.md`: seção de licença reescrita (uso/cópia/modificação/distribuição
+  livres, mantendo os créditos ao autor).
+
+### Motivação
+- O Paulo pediu para permitir inserir código com o fluxo de assinatura manual do
+  Bricks (a IA cria, o humano assina), mantendo a proteção anti-RCE.
+
 ## [0.2.0] - 2026-06-29
 
 ### Adicionado
@@ -83,6 +109,7 @@ uma nova entrada neste arquivo (espelhada na seção `== Changelog ==` do
   para gerar/rotacionar/revogar token, definir o usuário de serviço, ver a URL
   do endpoint e ajustar as proteções.
 
+[0.3.0]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.2.0]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.1.0]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.0.1]: https://marreiradigital.com.br/marreira-mcp-bricks

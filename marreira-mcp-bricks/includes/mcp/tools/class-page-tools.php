@@ -251,7 +251,7 @@ class Page_Tools extends Base_Tools {
 
 		return Tool_Registry::success_result(
 			Bricks_Gateway::summarize_post( $post_id ),
-			__( 'Pagina Bricks criada.', 'marreira-mcp-bricks' )
+			__( 'Pagina Bricks criada.', 'marreira-mcp-bricks' ) . self::code_warning( $prepared )
 		);
 	}
 
@@ -290,7 +290,7 @@ class Page_Tools extends Base_Tools {
 
 		return Tool_Registry::success_result(
 			Bricks_Gateway::summarize_post( $post_id ),
-			__( 'Arvore atualizada.', 'marreira-mcp-bricks' )
+			__( 'Arvore atualizada.', 'marreira-mcp-bricks' ) . self::code_warning( $prepared )
 		);
 	}
 

@@ -4,7 +4,7 @@ Tags: bricks, mcp, ai, page builder, rest api
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,12 @@ Nao. Por padrao, o plugin recusa qualquer elemento ou configuracao que execute c
 No modo de CSS inline (padrao do Bricks) nao e necessario. No modo External Files, o plugin tenta regenerar automaticamente e expoe a tool `regenerate_css`.
 
 == Changelog ==
+
+= 0.3.0 =
+* Elemento de codigo: agora pode ser criado pela IA quando o toggle "Bloquear elementos de codigo" estiver DESLIGADO, porem SEM assinatura (o Bricks nao executa codigo nao-assinado).
+* A tool avisa no resultado que o usuario precisa assinar o codigo no editor do Bricks ("Sign code") para executar.
+* Seguranca: qualquer "signature" enviada pela IA e descartada (so um humano assina). Injecao de script/{echo}/{do_action} e scripts em page settings continuam SEMPRE bloqueados.
+* SKILL.md atualizado com o fluxo de codigo + assinatura.
 
 = 0.2.0 =
 * SKILL.md empacotado no plugin + rota PUBLICA `/wp-json/marreira-mcp/v1/skill` que serve a documentacao em Markdown (somente leitura, sem token) para a IA/IDE ler.

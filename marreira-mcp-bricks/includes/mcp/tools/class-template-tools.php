@@ -179,7 +179,7 @@ class Template_Tools extends Base_Tools {
 
 		$summary         = Bricks_Gateway::summarize_post( $id );
 		$summary['type'] = $type;
-		return Tool_Registry::success_result( $summary, __( 'Template criado.', 'marreira-mcp-bricks' ) );
+		return Tool_Registry::success_result( $summary, __( 'Template criado.', 'marreira-mcp-bricks' ) . self::code_warning( $prepared ) );
 	}
 
 	/**
@@ -216,7 +216,7 @@ class Template_Tools extends Base_Tools {
 
 		return Tool_Registry::success_result(
 			Bricks_Gateway::summarize_post( $template_id ),
-			__( 'Template atualizado.', 'marreira-mcp-bricks' )
+			__( 'Template atualizado.', 'marreira-mcp-bricks' ) . self::code_warning( $prepared )
 		);
 	}
 

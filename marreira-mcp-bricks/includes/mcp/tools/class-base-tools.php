@@ -8,6 +8,7 @@
 namespace Marreira\MCP_Bricks\MCP\Tools;
 
 use Marreira\MCP_Bricks\MCP\Tool_Registry;
+use Marreira\MCP_Bricks\Bricks\Code_Guard;
 use WP_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -60,6 +61,16 @@ abstract class Base_Tools {
 			);
 		}
 		return null;
+	}
+
+	/**
+	 * Retorna um aviso de assinatura se a arvore tiver elemento de codigo.
+	 *
+	 * @param array $tree Arvore de elementos.
+	 * @return string String vazia ou o aviso prefixado por espaco.
+	 */
+	protected static function code_warning( $tree ) {
+		return Code_Guard::contains_code( $tree ) ? ' ' . Code_Guard::sign_warning() : '';
 	}
 
 	/**

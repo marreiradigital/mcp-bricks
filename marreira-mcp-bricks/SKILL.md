@@ -191,12 +191,27 @@ Exemplo de `conditions`: `[{ "main": "any" }]` ou
 - Ler e criar classes globais; ler paleta, theme styles e fontes.
 - Validar uma árvore antes de gravar.
 
-**Não é possível (por design de segurança):**
-- ❌ Inserir/editar **código executável** (elemento `code`, SVG com código,
-  tags `{echo:}`/`{do_action:}`, scripts em page settings) — **recusado (403)**.
+**Código — pode criar, mas o usuário assina (importante):**
+- O elemento `code` é controlado pelo toggle **"Bloquear elementos de código"**
+  no painel:
+  - **Ligado (padrão):** qualquer elemento de código é **recusado (403)**.
+  - **Desligado:** a IA **pode criar** o elemento `code`, **mas ele entra SEM
+    assinatura**. O Bricks **não executa código não-assinado** — aparece só um
+    placeholder. Para rodar, o **usuário precisa abrir a página no editor do
+    Bricks e clicar em "Sign code"** (Código → Assinar).
+- A IA **nunca** assina: qualquer `signature` enviada é **descartada** pelo
+  plugin. Só um humano autenticado no Bricks pode assinar.
+- ⚠️ Sempre que criar/editar uma página com elemento de código, **avise o
+  usuário** que ele precisa assinar no editor para o código executar (o próprio
+  resultado da tool já retorna esse aviso).
+
+**Nunca é possível (não há etapa de assinatura que proteja):**
+- ❌ Injeção de script/HTML executável em elementos comuns, tags `{echo:` /
+  `{do_action:` e scripts em page settings — **sempre recusado (403)**, mesmo
+  com o toggle desligado.
 - ❌ Operar sem token válido ou sem HTTPS.
 - ❌ Ultrapassar as permissões do usuário de serviço (sem escalonar funções).
-- ❌ (na v0.0.1) **escrever** paleta de cores/theme styles, criar fontes,
+- ❌ (por ora) **escrever** paleta de cores/theme styles, criar fontes,
   componentes, CPTs ou tabelas — veja o Roadmap no README.
 
 ---

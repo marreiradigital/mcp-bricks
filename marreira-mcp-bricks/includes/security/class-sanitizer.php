@@ -47,6 +47,11 @@ class Sanitizer {
 				if ( ! is_string( $k ) && ! is_int( $k ) ) {
 					continue;
 				}
+				// Nunca aceitar uma assinatura de codigo vinda da IA: so um humano
+				// pode assinar codigo no editor do Bricks. Removida sempre.
+				if ( 'signature' === $k ) {
+					continue;
+				}
 				$key = is_string( $k ) ? sanitize_text_field( $k ) : $k;
 				// Preserva chaves com sufixo responsivo/pseudo (ex.: _padding:tablet_portrait:hover).
 				$cleaned = self::deep_clean( $v, $depth + 1 );
