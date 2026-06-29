@@ -10,6 +10,30 @@ o header `Version:` do arquivo principal, o `Stable tag:` do `readme.txt` e
 uma nova entrada neste arquivo (espelhada na seção `== Changelog ==` do
 `readme.txt`).
 
+## [0.1.0] - 2026-06-29
+
+### Adicionado
+- **Menu próprio de topo** (com ícone SVG) no admin, em vez de subitem de
+  Configurações.
+- **Painel 100% AJAX** (sem recarregar a página), com abas **Painel**,
+  **Conexão**, **Segurança** e **Ferramentas**.
+- **Dashboard enriquecido**: métricas (páginas Bricks, templates, classes
+  globais, ferramentas MCP), status do ambiente (Bricks, modo de CSS, anti-RCE,
+  protocolo) e **autoteste interno** de conexão.
+- **Catálogo de ferramentas MCP** com busca e destaque dos argumentos
+  obrigatórios — lido da mesma fonte única do servidor MCP.
+- Gerar/rotacionar/revogar **token** e salvar configurações (HTTPS, anti-RCE,
+  rate limit, usuário de serviço) **via AJAX**, com toasts de feedback.
+
+### Alterado
+- `MCP_Server` expõe `build_registry()` estático como **fonte única** do
+  catálogo de tools, reutilizado pelo painel (evita duplicar a lista).
+- Camada de admin reescrita: removido o antigo `Settings_Page` (form POST com
+  reload) em favor de `Admin` (SPA AJAX).
+
+### Motivação
+- O Paulo pediu menu próprio, painel mais rico, design revisado e tudo via AJAX.
+
 ## [0.0.1] - 2026-06-29
 
 ### Adicionado
@@ -39,4 +63,5 @@ uma nova entrada neste arquivo (espelhada na seção `== Changelog ==` do
   para gerar/rotacionar/revogar token, definir o usuário de serviço, ver a URL
   do endpoint e ajustar as proteções.
 
+[0.1.0]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.0.1]: https://marreiradigital.com.br/marreira-mcp-bricks

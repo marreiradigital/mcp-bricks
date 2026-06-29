@@ -1,54 +1,348 @@
 /**
- * MarreiraMCP Bricks — interacoes da tela de admin.
- * Botoes de "copiar" para o endpoint e o token.
+ * MarreiraMCP Bricks — painel admin 100% AJAX (sem reloads).
  */
 ( function () {
 	'use strict';
 
-	function flash( btn, label ) {
-		var original = btn.getAttribute( 'data-label' ) || btn.textContent;
-		btn.setAttribute( 'data-label', original );
-		btn.textContent = label;
-		window.setTimeout( function () {
-			btn.textContent = original;
-		}, 1600 );
+	var API = ( window.MMB && MMB.ajaxurl ) || '';
+	var NONCE = ( window.MMB && MMB.nonce ) || '';
+	var root = document.getElementById( 'mmb-app' );
+	if ( ! root ) { return; }
+
+	var state = { status: null, tab: 'painel', flashToken: null };
+
+	// ---- utils ----
+	function esc( s ) {
+		return String( s == null ? '' : s ).replace( /[&<>"']/g, function ( c ) {
+			return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ c ];
+		} );
 	}
 
-	function copyFrom( selector, btn ) {
-		var el = document.querySelector( selector );
-		if ( ! el ) {
-			return;
+	function post( action, extra ) {
+		var fd = new FormData();
+		fd.append( 'action', action );
+		fd.append( '_ajax_nonce', NONCE );
+		if ( extra ) {
+			Object.keys( extra ).forEach( function ( k ) {
+				var v = extra[ k ];
+				if ( typeof v === 'boolean' ) { v = v ? '1' : '0'; }
+				fd.append( k, v );
+			} );
 		}
-		var text = el.textContent.trim();
+		return fetch( API, { method: 'POST', credentials: 'same-origin', body: fd } )
+			.then( function ( r ) { return r.json(); } );
+	}
 
-		if ( navigator.clipboard && navigator.clipboard.writeText ) {
-			navigator.clipboard.writeText( text ).then(
-				function () { flash( btn, btn.getAttribute( 'data-done' ) || 'Copiado!' ); },
-				function () { flash( btn, 'Falhou' ); }
-			);
-		} else {
-			// Fallback legado.
-			var range = document.createRange();
-			range.selectNodeContents( el );
-			var sel = window.getSelection();
-			sel.removeAllRanges();
-			sel.addRange( range );
-			try {
-				document.execCommand( 'copy' );
-				flash( btn, btn.getAttribute( 'data-done' ) || 'Copiado!' );
-			} catch ( e ) {
-				flash( btn, 'Falhou' );
+	var toastEl;
+	function toast( msg, type ) {
+		if ( ! toastEl ) {
+			toastEl = document.createElement( 'div' );
+			toastEl.className = 'mmb-toast';
+			document.body.appendChild( toastEl );
+		}
+		toastEl.textContent = msg;
+		toastEl.className = 'mmb-toast ' + ( type || '' );
+		// reflow para reiniciar a animacao
+		void toastEl.offsetWidth;
+		toastEl.classList.add( 'show' );
+		clearTimeout( toastEl._t );
+		toastEl._t = setTimeout( function () { toastEl.classList.remove( 'show' ); }, 2200 );
+	}
+
+	function copy( text, btn ) {
+		var done = function () {
+			if ( btn ) {
+				var o = btn.textContent; btn.textContent = 'Copiado!';
+				setTimeout( function () { btn.textContent = o; }, 1500 );
 			}
-			sel.removeAllRanges();
+			toast( 'Copiado para a área de transferência.', 'ok' );
+		};
+		if ( navigator.clipboard && navigator.clipboard.writeText ) {
+			navigator.clipboard.writeText( text ).then( done, function () { toast( 'Falha ao copiar.', 'err' ); } );
+		} else {
+			var ta = document.createElement( 'textarea' ); ta.value = text; document.body.appendChild( ta );
+			ta.select(); try { document.execCommand( 'copy' ); done(); } catch ( e ) { toast( 'Falha ao copiar.', 'err' ); }
+			document.body.removeChild( ta );
 		}
 	}
 
-	document.addEventListener( 'click', function ( ev ) {
-		var btn = ev.target.closest( '.mmb-copy' );
-		if ( ! btn ) {
+	// ---- render ----
+	function badge( cls, label ) { return '<span class="mmb-badge ' + cls + '">' + esc( label ) + '</span>'; }
+
+	function topbar() {
+		var s = state.status;
+		var b = '';
+		b += s.bricks_active ? badge( 'is-on', '● Bricks ' + ( s.bricks_version || 'ativo' ) ) : badge( 'is-off', '○ Bricks inativo' );
+		b += s.has_token ? badge( 'is-on', '● Token ativo' ) : badge( 'is-off', '○ Sem token' );
+		b += s.service_user_ok ? badge( 'is-on', '● Usuário OK' ) : badge( 'is-warn', '▲ Defina o usuário' );
+		b += badge( 'is-info', 'CSS: ' + esc( s.css_mode ) );
+		b += badge( 'is-info', 'v' + esc( s.plugin_version ) );
+		return '<header class="mmb-topbar">' +
+			'<div class="mmb-logo" aria-hidden="true"><span></span><span></span><span></span><span></span></div>' +
+			'<div><h1>MarreiraMCP Bricks</h1><p class="mmb-sub">Servidor MCP para criar e editar páginas Bricks via IA</p></div>' +
+			'<div class="mmb-badges">' + b + '</div></header>';
+	}
+
+	var TABS = [
+		[ 'painel', 'Painel' ],
+		[ 'conexao', 'Conexão' ],
+		[ 'seguranca', 'Segurança' ],
+		[ 'ferramentas', 'Ferramentas' ],
+	];
+
+	function tabsNav() {
+		return '<nav class="mmb-tabs">' + TABS.map( function ( t ) {
+			return '<button class="mmb-tab' + ( state.tab === t[ 0 ] ? ' is-active' : '' ) + '" data-tab="' + t[ 0 ] + '">' + esc( t[ 1 ] ) + '</button>';
+		} ).join( '' ) + '</nav>';
+	}
+
+	function stat( icon, num, label ) {
+		return '<div class="mmb-stat"><span class="mmb-stat-icon">' + icon + '</span>' +
+			'<span class="mmb-stat-num">' + esc( num ) + '</span>' +
+			'<span class="mmb-stat-label">' + esc( label ) + '</span></div>';
+	}
+
+	function viewPainel() {
+		var s = state.status, c = s.counts;
+		var stats = '<div class="mmb-stats">' +
+			stat( '📄', c.pages, 'Páginas Bricks' ) +
+			stat( '🧩', c.templates, 'Templates' ) +
+			stat( '🎨', c.global_classes, 'Classes globais' ) +
+			stat( '🛠️', c.tools, 'Ferramentas MCP' ) + '</div>';
+
+		var env = '<section class="mmb-card"><h2>Ambiente</h2>' +
+			'<dl class="mmb-kv">' +
+			'<dt>Bricks</dt><dd>' + ( s.bricks_active ? esc( s.bricks_version || 'ativo' ) : 'inativo' ) + '</dd>' +
+			'<dt>Modo de CSS</dt><dd>' + esc( s.css_mode ) + '</dd>' +
+			'<dt>Anti-RCE</dt><dd>' + ( s.code_blocking ? 'ativo (bloqueando código)' : 'desativado' ) + '</dd>' +
+			'<dt>Protocolo MCP</dt><dd>' + esc( s.mcp_protocol ) + '</dd>' +
+			'<dt>Índice /wp-json</dt><dd>endpoints ocultos ✔</dd>' +
+			'</dl>' +
+			'<div class="mmb-actions"><button class="mmb-btn mmb-btn-primary" data-action="selftest">Testar conexão interna</button></div>' +
+			'<div id="mmb-selftest"></div></section>';
+
+		return '<div class="mmb-grid cols-2">' +
+			'<section class="mmb-card"><h2>Visão geral</h2><p class="mmb-hint">Resumo do que a IA pode gerenciar neste site.</p>' + stats + '</section>' +
+			env + '</div>';
+	}
+
+	function viewConexao() {
+		var s = state.status;
+		var flash = '';
+		if ( state.flashToken ) {
+			flash = '<div class="mmb-flash"><h2>Token gerado — copie agora!</h2>' +
+				'<p class="mmb-hint">Exibido apenas uma vez; o WordPress guarda só o hash.</p>' +
+				'<div class="mmb-copy-row"><code class="mmb-code is-token" id="mmb-tok">' + esc( state.flashToken ) + '</code>' +
+				'<button class="mmb-btn mmb-copy" data-copy="#mmb-tok">Copiar</button></div></div>';
+			state.flashToken = null;
+		}
+
+		var curl = 'curl -X POST "' + s.endpoint_url + '" \\\n' +
+			'  -H "Content-Type: application/json" \\\n' +
+			'  -H "Authorization: Bearer SEU_TOKEN" \\\n' +
+			"  -d '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/list\",\"params\":{}}'";
+
+		var tokenMeta = s.has_token
+			? '<dl class="mmb-kv"><dt>Criado</dt><dd>' + esc( s.token_created || '—' ) + '</dd><dt>Último uso</dt><dd>' + esc( s.token_last_used || 'nunca' ) + '</dd></dl>'
+			: '<p class="mmb-hint">Nenhum token configurado.</p>';
+
+		var tokenBtns = '<div class="mmb-actions">' +
+			'<button class="mmb-btn mmb-btn-primary" data-action="gen-token">' + ( s.has_token ? 'Rotacionar token' : 'Gerar token' ) + '</button>' +
+			( s.has_token ? '<button class="mmb-btn mmb-btn-danger" data-action="revoke-token">Revogar</button>' : '' ) +
+			'</div>';
+
+		return flash + '<div class="mmb-grid cols-2">' +
+			'<section class="mmb-card"><h2>Endpoint MCP</h2>' +
+			'<div class="mmb-field"><label>URL (POST, JSON-RPC 2.0)</label>' +
+			'<div class="mmb-copy-row"><code class="mmb-code" id="mmb-ep">' + esc( s.endpoint_url ) + '</code><button class="mmb-btn mmb-copy" data-copy="#mmb-ep">Copiar</button></div></div>' +
+			'<div class="mmb-field"><label>Autenticação</label><code class="mmb-code">Authorization: Bearer &lt;token&gt;</code></div>' +
+			'<div class="mmb-field"><label>Exemplo (cURL)</label><div class="mmb-copy-row"><code class="mmb-code" id="mmb-curl">' + esc( curl ) + '</code><button class="mmb-btn mmb-copy" data-copy="#mmb-curl">Copiar</button></div></div>' +
+			'</section>' +
+			'<section class="mmb-card"><h2>Token de acesso</h2><p class="mmb-hint">Autentica o agente de IA. Guardado apenas como hash.</p>' + tokenMeta + tokenBtns + '</section>' +
+			'</div>';
+	}
+
+	function viewSeguranca() {
+		var st = state.status.settings;
+		var users = state.status.users.map( function ( u ) {
+			return '<option value="' + u.id + '"' + ( u.id === st.service_user_id ? ' selected' : '' ) + '>' + esc( u.name ) + '</option>';
+		} ).join( '' );
+
+		return '<div class="mmb-grid cols-2">' +
+			'<section class="mmb-card"><h2>Proteções</h2><p class="mmb-hint">Aplicadas a cada requisição. Salvas automaticamente.</p>' +
+			toggle( 'https_only', 'Exigir HTTPS', 'Recusa chamadas sem TLS.', st.https_only ) +
+			toggle( 'block_code', 'Bloquear execução de código (anti-RCE)', 'A IA não pode criar elementos Code/SVG com código nem scripts.', st.block_code ) +
+			'<div class="mmb-field"><label for="mmb-rl">Limite de requisições</label>' +
+			'<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">' +
+			'<input type="number" min="0" id="mmb-rl" value="' + st.rate_limit + '"> <span class="mmb-toggle-sub">por</span> ' +
+			'<input type="number" min="1" id="mmb-rw" value="' + st.rate_window + '"> <span class="mmb-toggle-sub">segundos</span>' +
+			'<button class="mmb-btn mmb-btn-primary" data-action="save-rate">Salvar</button></div>' +
+			'<p class="description">Use 0 no limite para desativar.</p></div>' +
+			'</section>' +
+			'<section class="mmb-card"><h2>Usuário de serviço</h2><p class="mmb-hint">As permissões deste usuário definem o que a IA pode fazer.</p>' +
+			'<div class="mmb-field"><label for="mmb-user">Usuário</label><select id="mmb-user" data-action="save-user">' +
+			'<option value="0">— selecione —</option>' + users + '</select>' +
+			'<p class="description">' + ( state.status.service_user_ok ? 'Usuário válido com permissão de edição. ✔' : 'Escolha um usuário com permissão de editar páginas.' ) + '</p></div>' +
+			'</section></div>';
+	}
+
+	function toggle( id, label, sub, checked ) {
+		return '<label class="mmb-toggle"><input type="checkbox" data-toggle="' + id + '"' + ( checked ? ' checked' : '' ) + '>' +
+			'<span class="mmb-switch" aria-hidden="true"></span>' +
+			'<span><span class="mmb-toggle-label">' + esc( label ) + '</span><span class="mmb-toggle-sub">' + esc( sub ) + '</span></span></label>';
+	}
+
+	function viewFerramentas() {
+		var tools = state.status.tools || [];
+		var cards = tools.map( function ( t ) {
+			var props = ( t.inputSchema && t.inputSchema.properties ) || {};
+			var req = ( t.inputSchema && t.inputSchema.required ) || [];
+			var args = Object.keys( props ).map( function ( k ) {
+				var isReq = req.indexOf( k ) !== -1;
+				return '<span class="mmb-arg' + ( isReq ? ' req' : '' ) + '">' + esc( k ) + ( isReq ? '*' : '' ) + '</span>';
+			} ).join( '' );
+			return '<div class="mmb-tool" data-name="' + esc( t.name ) + '">' +
+				'<div class="mmb-tool-name">' + esc( t.name ) + '</div>' +
+				'<div class="mmb-tool-desc">' + esc( t.description ) + '</div>' +
+				'<div class="mmb-tool-args">' + ( args || '<span class="mmb-arg">sem argumentos</span>' ) + '</div></div>';
+		} ).join( '' );
+
+		return '<section class="mmb-card"><h2>Catálogo de ferramentas MCP (' + tools.length + ')</h2>' +
+			'<p class="mmb-hint">Tudo que a IA pode chamar. Campos com <strong>*</strong> são obrigatórios.</p>' +
+			'<input type="search" class="mmb-tool-search" id="mmb-search" placeholder="Filtrar ferramentas…">' +
+			'<div class="mmb-tools" id="mmb-tool-list">' + cards + '</div></section>';
+	}
+
+	function viewFor( tab ) {
+		if ( tab === 'conexao' ) { return viewConexao(); }
+		if ( tab === 'seguranca' ) { return viewSeguranca(); }
+		if ( tab === 'ferramentas' ) { return viewFerramentas(); }
+		return viewPainel();
+	}
+
+	function render() {
+		root.innerHTML = topbar() + tabsNav() +
+			'<div class="mmb-panel-view" id="mmb-view">' + viewFor( state.tab ) + '</div>';
+	}
+
+	// ---- actions ----
+	function refresh( newStatus ) {
+		if ( newStatus ) { state.status = newStatus; }
+		render();
+	}
+
+	function gatherSettings( overrides ) {
+		var st = state.status.settings;
+		var data = {
+			service_user_id: st.service_user_id,
+			https_only: st.https_only,
+			block_code: st.block_code,
+			rate_limit: st.rate_limit,
+			rate_window: st.rate_window,
+		};
+		if ( overrides ) { Object.keys( overrides ).forEach( function ( k ) { data[ k ] = overrides[ k ]; } ); }
+		return data;
+	}
+
+	function saveSettings( overrides, okMsg ) {
+		return post( 'mmb_save_settings', gatherSettings( overrides ) ).then( function ( res ) {
+			if ( res && res.success ) {
+				state.status = res.data;
+				toast( okMsg || 'Configurações salvas.', 'ok' );
+				render();
+			} else {
+				toast( ( res && res.data && res.data.message ) || 'Falha ao salvar.', 'err' );
+			}
+		} ).catch( function () { toast( 'Erro de rede.', 'err' ); } );
+	}
+
+	// delegação de eventos
+	root.addEventListener( 'click', function ( ev ) {
+		var tabBtn = ev.target.closest( '.mmb-tab' );
+		if ( tabBtn ) { state.tab = tabBtn.getAttribute( 'data-tab' ); render(); return; }
+
+		var copyBtn = ev.target.closest( '[data-copy]' );
+		if ( copyBtn ) {
+			var el = document.querySelector( copyBtn.getAttribute( 'data-copy' ) );
+			if ( el ) { copy( el.textContent, copyBtn ); }
 			return;
 		}
-		ev.preventDefault();
-		copyFrom( btn.getAttribute( 'data-target' ), btn );
+
+		var act = ev.target.closest( '[data-action]' );
+		if ( ! act ) { return; }
+		var action = act.getAttribute( 'data-action' );
+
+		if ( action === 'selftest' ) {
+			act.disabled = true;
+			post( 'mmb_selftest' ).then( function ( res ) {
+				act.disabled = false;
+				var box = document.getElementById( 'mmb-selftest' );
+				if ( res && res.success && res.data.ok ) {
+					box.innerHTML = '<code class="mmb-code is-token" style="margin-top:12px">✔ OK — ' + esc( JSON.stringify( res.data.data ) ) + '</code>';
+					toast( 'Conexão interna OK.', 'ok' );
+				} else {
+					box.innerHTML = '<code class="mmb-code" style="margin-top:12px">Falha no autoteste.</code>';
+					toast( 'Falha no autoteste.', 'err' );
+				}
+			} ).catch( function () { act.disabled = false; toast( 'Erro de rede.', 'err' ); } );
+		}
+
+		if ( action === 'gen-token' ) {
+			if ( state.status.has_token && ! window.confirm( 'Rotacionar o token? O token atual deixará de funcionar.' ) ) { return; }
+			act.disabled = true;
+			post( 'mmb_generate_token' ).then( function ( res ) {
+				act.disabled = false;
+				if ( res && res.success ) {
+					state.status = res.data.status;
+					state.flashToken = res.data.token;
+					state.tab = 'conexao';
+					render();
+					toast( 'Token gerado.', 'ok' );
+				} else { toast( 'Falha ao gerar token.', 'err' ); }
+			} ).catch( function () { act.disabled = false; toast( 'Erro de rede.', 'err' ); } );
+		}
+
+		if ( action === 'revoke-token' ) {
+			if ( ! window.confirm( 'Revogar o token? Integrações existentes deixarão de funcionar.' ) ) { return; }
+			post( 'mmb_revoke_token' ).then( function ( res ) {
+				if ( res && res.success ) { state.status = res.data; render(); toast( 'Token revogado.', 'ok' ); }
+				else { toast( 'Falha ao revogar.', 'err' ); }
+			} );
+		}
+
+		if ( action === 'save-rate' ) {
+			var rl = document.getElementById( 'mmb-rl' );
+			var rw = document.getElementById( 'mmb-rw' );
+			saveSettings( { rate_limit: Math.max( 0, parseInt( rl.value, 10 ) || 0 ), rate_window: Math.max( 1, parseInt( rw.value, 10 ) || 1 ) }, 'Limite atualizado.' );
+		}
 	} );
+
+	root.addEventListener( 'change', function ( ev ) {
+		var tg = ev.target.closest( '[data-toggle]' );
+		if ( tg ) {
+			var key = tg.getAttribute( 'data-toggle' );
+			var ov = {}; ov[ key ] = tg.checked;
+			saveSettings( ov, tg.checked ? 'Ativado.' : 'Desativado.' );
+			return;
+		}
+		var us = ev.target.closest( '[data-action="save-user"]' );
+		if ( us ) { saveSettings( { service_user_id: parseInt( us.value, 10 ) || 0 }, 'Usuário de serviço atualizado.' ); }
+	} );
+
+	root.addEventListener( 'input', function ( ev ) {
+		if ( ev.target.id === 'mmb-search' ) {
+			var q = ev.target.value.toLowerCase();
+			document.querySelectorAll( '#mmb-tool-list .mmb-tool' ).forEach( function ( el ) {
+				var name = el.getAttribute( 'data-name' ).toLowerCase();
+				var txt = el.textContent.toLowerCase();
+				el.style.display = ( name.indexOf( q ) !== -1 || txt.indexOf( q ) !== -1 ) ? '' : 'none';
+			} );
+		}
+	} );
+
+	// ---- init ----
+	post( 'mmb_status' ).then( function ( res ) {
+		if ( res && res.success ) { state.status = res.data; render(); }
+		else { root.innerHTML = '<div class="mmb-loading">Falha ao carregar o painel.</div>'; }
+	} ).catch( function () { root.innerHTML = '<div class="mmb-loading">Erro de rede ao carregar o painel.</div>'; } );
 } )();

@@ -4,7 +4,7 @@ Tags: bricks, mcp, ai, page builder, rest api
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.0.1
+Stable tag: 0.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,14 @@ Nao. Por padrao, o plugin recusa qualquer elemento ou configuracao que execute c
 No modo de CSS inline (padrao do Bricks) nao e necessario. No modo External Files, o plugin tenta regenerar automaticamente e expoe a tool `regenerate_css`.
 
 == Changelog ==
+
+= 0.1.0 =
+* Menu proprio de topo (com icone) em vez de subitem de Configuracoes.
+* Painel administrativo 100% AJAX (sem reloads): abas Painel, Conexao, Seguranca e Ferramentas.
+* Dashboard enriquecido: metricas (paginas, templates, classes globais, tools), status do ambiente e autoteste interno.
+* Catalogo de ferramentas MCP com busca e indicacao de argumentos obrigatorios.
+* Geracao/rotacao/revogacao de token e configuracoes salvas via AJAX.
+* Refatoracao: registro de tools como fonte unica reutilizada pelo painel.
 
 = 0.0.1 =
 * Versao inicial: servidor MCP sobre rota REST oculta (JSON-RPC 2.0).

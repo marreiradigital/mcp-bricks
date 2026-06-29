@@ -8,7 +8,7 @@
 namespace Marreira\MCP_Bricks;
 
 use Marreira\MCP_Bricks\MCP\MCP_Server;
-use Marreira\MCP_Bricks\Admin\Settings_Page;
+use Marreira\MCP_Bricks\Admin\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -62,7 +62,7 @@ final class Plugin {
 
 		// Tela de administracao (somente no admin).
 		if ( is_admin() ) {
-			( new Settings_Page() )->register_hooks();
+			( new Admin() )->register_hooks();
 		}
 
 		// i18n.

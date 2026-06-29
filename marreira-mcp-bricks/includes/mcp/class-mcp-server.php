@@ -53,24 +53,35 @@ class MCP_Server {
 	 */
 	private function registry() {
 		if ( null === $this->registry ) {
-			$this->registry = new Tool_Registry();
-
-			// Registro das tools por dominio (fonte unica).
-			Page_Tools::register( $this->registry );
-			Template_Tools::register( $this->registry );
-			Element_Tools::register( $this->registry );
-			Style_Tools::register( $this->registry );
-			Util_Tools::register( $this->registry );
-
-			/**
-			 * Permite que outros modulos registrem tools adicionais.
-			 *
-			 * @param Tool_Registry $registry Registro de tools.
-			 */
-			do_action( 'mmb_register_tools', $this->registry );
+			$this->registry = self::build_registry();
 		}
 
 		return $this->registry;
+	}
+
+	/**
+	 * Constroi o registro de tools (fonte unica, reusavel pelo admin).
+	 *
+	 * @return Tool_Registry
+	 */
+	public static function build_registry() {
+		$registry = new Tool_Registry();
+
+		// Registro das tools por dominio (fonte unica).
+		Page_Tools::register( $registry );
+		Template_Tools::register( $registry );
+		Element_Tools::register( $registry );
+		Style_Tools::register( $registry );
+		Util_Tools::register( $registry );
+
+		/**
+		 * Permite que outros modulos registrem tools adicionais.
+		 *
+		 * @param Tool_Registry $registry Registro de tools.
+		 */
+		do_action( 'mmb_register_tools', $registry );
+
+		return $registry;
 	}
 
 	/**

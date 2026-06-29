@@ -4,7 +4,7 @@
 
 **Servidor MCP para criar e editar páginas do Bricks Builder com IA — de forma nativa, segura e reversível.**
 
-[![Versão](https://img.shields.io/badge/versão-0.0.1-3a8bfd.svg)](CHANGELOG.md)
+[![Versão](https://img.shields.io/badge/versão-0.1.0-3a8bfd.svg)](marreira-mcp-bricks/CHANGELOG.md)
 [![WordPress](https://img.shields.io/badge/WordPress-6.4%2B-21759b.svg)](https://wordpress.org/)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-777bb4.svg)](https://www.php.net/)
 [![Bricks](https://img.shields.io/badge/Bricks%20Builder-requerido-ff5a52.svg)](https://bricksbuilder.io/)
