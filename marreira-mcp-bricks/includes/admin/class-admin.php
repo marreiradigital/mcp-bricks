@@ -174,6 +174,7 @@ class Admin {
 			'css_mode'         => Css_Regenerator::loading_method(),
 			'code_blocking'    => Code_Guard::is_blocking(),
 			'endpoint_url'     => esc_url_raw( rest_url( MMB_REST_NAMESPACE . MMB_REST_ROUTE ) ),
+			'skill_url'        => esc_url_raw( rest_url( MMB_REST_NAMESPACE . '/skill' ) ),
 			'index_hidden'     => true,
 			'has_token'        => Token_Manager::has_token(),
 			'token_last_used'  => ! empty( $meta['last_used'] ) ? wp_date( 'd/m/Y H:i', (int) $meta['last_used'] ) : '',

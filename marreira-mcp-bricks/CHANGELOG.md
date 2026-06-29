@@ -10,6 +10,26 @@ o header `Version:` do arquivo principal, o `Stable tag:` do `readme.txt` e
 uma nova entrada neste arquivo (espelhada na seção `== Changelog ==` do
 `readme.txt`).
 
+## [0.2.0] - 2026-06-29
+
+### Adicionado
+- **SKILL.md empacotado no plugin** e exposto numa **rota pública**
+  `GET /wp-json/marreira-mcp/v1/skill` que serve a documentação em **Markdown**
+  (somente leitura, sem token). Assim qualquer site com o plugin instalado tem
+  uma URL fixa, fácil de copiar e mandar para a IA/IDE ler — útil quando a
+  skill ainda não está baixada no cliente.
+- Painel: card **"Skill para a IA"** na aba Conexão, com a URL pública copiável.
+- **SKILL.md — seção "Boas práticas de design"**: o agente deve seguir o guia
+  de estilo do site (Theme Styles) em vez de cravar `font-size`; reaproveitar a
+  paleta e as classes globais; preservar elementos funcionais ao editar páginas
+  existentes (ex.: login); e dar um `label` legível a cada elemento para a
+  árvore ficar organizada no editor do Bricks.
+
+### Motivação
+- O Paulo pediu que a skill fosse distribuída pelo próprio plugin (URL pública
+  por instalação), e a correção de tipografia/design surgiu ao gerar páginas
+  reais que não seguiam o design system do site.
+
 ## [0.1.0] - 2026-06-29
 
 ### Adicionado
@@ -63,5 +83,6 @@ uma nova entrada neste arquivo (espelhada na seção `== Changelog ==` do
   para gerar/rotacionar/revogar token, definir o usuário de serviço, ver a URL
   do endpoint e ajustar as proteções.
 
+[0.2.0]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.1.0]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.0.1]: https://marreiradigital.com.br/marreira-mcp-bricks

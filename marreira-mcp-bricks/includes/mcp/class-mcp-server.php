@@ -108,6 +108,41 @@ class MCP_Server {
 				),
 			)
 		);
+
+		// Rota PUBLICA de documentacao (skill) para a IA/IDE ler. Sem token,
+		// somente leitura: serve o SKILL.md empacotado como markdown.
+		register_rest_route(
+			MMB_REST_NAMESPACE,
+			'/skill',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'serve_skill' ),
+				'permission_callback' => '__return_true',
+				'show_in_index'       => false,
+			)
+		);
+	}
+
+	/**
+	 * Serve o arquivo SKILL.md empacotado, como markdown publico.
+	 *
+	 * @return void
+	 */
+	public function serve_skill() {
+		$file = MMB_PLUGIN_DIR . 'SKILL.md';
+
+		if ( ! is_readable( $file ) ) {
+			status_header( 404 );
+			header( 'Content-Type: text/plain; charset=utf-8' );
+			echo 'SKILL.md nao encontrado.';
+			exit;
+		}
+
+		nocache_headers();
+		header( 'Content-Type: text/markdown; charset=utf-8' );
+		header( 'X-Robots-Tag: noindex' );
+		readfile( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile
+		exit;
 	}
 
 	/**

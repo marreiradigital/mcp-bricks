@@ -4,7 +4,7 @@ Tags: bricks, mcp, ai, page builder, rest api
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,11 @@ Nao. Por padrao, o plugin recusa qualquer elemento ou configuracao que execute c
 No modo de CSS inline (padrao do Bricks) nao e necessario. No modo External Files, o plugin tenta regenerar automaticamente e expoe a tool `regenerate_css`.
 
 == Changelog ==
+
+= 0.2.0 =
+* SKILL.md empacotado no plugin + rota PUBLICA `/wp-json/marreira-mcp/v1/skill` que serve a documentacao em Markdown (somente leitura, sem token) para a IA/IDE ler.
+* Painel: card "Skill para a IA" com a URL publica copiavel.
+* Documentacao (SKILL.md): secao "Boas praticas de design" — tipografia herdada dos Theme Styles (nao fixar font-size), reaproveitar paleta/classes globais, preservar elementos funcionais ao editar paginas existentes, e usar "label" para nomear elementos na arvore do editor.
 
 = 0.1.0 =
 * Menu proprio de topo (com icone) em vez de subitem de Configuracoes.

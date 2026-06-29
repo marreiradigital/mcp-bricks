@@ -159,6 +159,9 @@
 			'<div class="mmb-field"><label>Exemplo (cURL)</label><div class="mmb-copy-row"><code class="mmb-code" id="mmb-curl">' + esc( curl ) + '</code><button class="mmb-btn mmb-copy" data-copy="#mmb-curl">Copiar</button></div></div>' +
 			'</section>' +
 			'<section class="mmb-card"><h2>Token de acesso</h2><p class="mmb-hint">Autentica o agente de IA. Guardado apenas como hash.</p>' + tokenMeta + tokenBtns + '</section>' +
+			'<section class="mmb-card mmb-span-2"><h2>Skill para a IA</h2>' +
+			'<p class="mmb-hint">URL pública (somente leitura) com a documentação do plugin em Markdown. Copie e mande para a IA/IDE ler como referência do que é possível fazer — útil quando a skill ainda não está baixada.</p>' +
+			'<div class="mmb-copy-row"><code class="mmb-code" id="mmb-skill">' + esc( s.skill_url ) + '</code><button class="mmb-btn mmb-copy" data-copy="#mmb-skill">Copiar</button></div></section>' +
 			'</div>';
 	}
 
