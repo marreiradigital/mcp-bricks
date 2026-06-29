@@ -4,7 +4,7 @@
 
 **Servidor MCP para criar e editar páginas do Bricks Builder com IA — de forma nativa, segura e reversível.**
 
-[![Versão](https://img.shields.io/badge/versão-0.1.0-3a8bfd.svg)](marreira-mcp-bricks/CHANGELOG.md)
+[![Versão](https://img.shields.io/badge/versão-0.2.0-3a8bfd.svg)](marreira-mcp-bricks/CHANGELOG.md)
 [![WordPress](https://img.shields.io/badge/WordPress-6.4%2B-21759b.svg)](https://wordpress.org/)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-777bb4.svg)](https://www.php.net/)
 [![Bricks](https://img.shields.io/badge/Bricks%20Builder-requerido-ff5a52.svg)](https://bricksbuilder.io/)
@@ -42,6 +42,8 @@ para páginas, templates, elementos e estilos globais.
 | 🎨 **Estilos globais** | Cria e reaproveita classes globais, lê paletas de cor, theme styles e fontes. |
 | 🧩 **Templates** | Header, footer, seções e templates de conteúdo, com condições de exibição. |
 | ⚡ **CSS sempre em dia** | Detecta o modo de CSS do Bricks e regenera quando necessário. |
+| 📖 **Skill embutida** | Cada site instala uma URL pública com a documentação em Markdown, pronta para a IA ler. |
+| 🖥️ **Painel próprio** | Menu de topo com painel 100% AJAX (estilo Bricks): token, segurança, métricas e catálogo de ferramentas. |
 
 ---
 
@@ -100,6 +102,21 @@ escuro), com botões de copiar, toggles de segurança e o status do token.
 
 ---
 
+## 📖 Skill para a IA (URL pública por instalação)
+
+O `SKILL.md` vai **embutido no plugin** e é servido numa **URL pública**
+(somente leitura, sem token) em qualquer site onde o plugin esteja instalado:
+
+```
+GET https://SEU-SITE/wp-json/marreira-mcp/v1/skill
+```
+
+Ela devolve a documentação em **Markdown** — basta copiar a URL (há um botão de
+copiar no painel, aba **Conexão**) e mandar para a IA/IDE ler como referência do
+que o plugin permite. Útil quando a skill ainda não está baixada no cliente.
+
+---
+
 ## 🧰 Capacidades (resumo)
 
 - **Páginas:** listar, ler, criar, atualizar, ajustar SEO/visibilidade, excluir.
@@ -135,14 +152,19 @@ responsável (não abra issue pública com detalhes sensíveis).
 
 ## 🗺️ Roadmap
 
+Já entregue:
+
+- **0.1.0** — Menu próprio + painel 100% AJAX (estilo Bricks).
+- **0.2.0** — `SKILL.md` embutido + URL pública da skill por instalação.
+
 Planejado para versões futuras (sujeito a ajustes):
 
-- **0.1.x** — Escrita de paleta de cores e theme styles; upload/gestão de fontes.
-- **0.2.x** — Componentes Bricks (criar/instanciar) e variáveis globais.
-- **0.3.x** — Custom Post Types e taxonomias sob demanda para a IA.
-- **0.4.x** — Tabelas personalizadas e campos customizáveis refletindo nas
+- **0.3.x** — Escrita de paleta de cores e theme styles; upload/gestão de fontes.
+- **0.4.x** — Componentes Bricks (criar/instanciar) e variáveis globais.
+- **0.5.x** — Custom Post Types e taxonomias sob demanda para a IA.
+- **0.6.x** — Tabelas personalizadas e campos customizáveis refletindo nas
   páginas.
-- **0.5.x** — Funções de tema seguras e dynamic data tags personalizadas.
+- **0.7.x** — Funções de tema seguras e dynamic data tags personalizadas.
 - **1.0.0** — Estabilização, cobertura de testes e publicação no diretório
   WordPress.org.
 
