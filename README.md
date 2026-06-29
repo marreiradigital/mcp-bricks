@@ -4,7 +4,7 @@
 
 **Servidor MCP para criar e editar páginas do Bricks Builder com IA — de forma nativa, segura e reversível.**
 
-[![Versão](https://img.shields.io/badge/versão-0.3.0-3a8bfd.svg)](marreira-mcp-bricks/CHANGELOG.md)
+[![Versão](https://img.shields.io/badge/versão-0.4.0-3a8bfd.svg)](marreira-mcp-bricks/CHANGELOG.md)
 [![WordPress](https://img.shields.io/badge/WordPress-6.4%2B-21759b.svg)](https://wordpress.org/)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-777bb4.svg)](https://www.php.net/)
 [![Bricks](https://img.shields.io/badge/Bricks%20Builder-requerido-ff5a52.svg)](https://bricksbuilder.io/)
@@ -126,8 +126,9 @@ que o plugin permite. Útil quando a skill ainda não está baixada no cliente.
   com validação de integridade da árvore.
 - **Estilos globais:** classes globais (criar/atualizar/excluir), leitura de
   paleta de cores, theme styles e fontes.
-- **Utilitários:** inspecionar o ambiente, validar uma árvore (dry-run) e
-  regenerar o CSS.
+- **Utilitários:** inspecionar o ambiente, validar uma árvore (dry-run),
+  regenerar o CSS e **descobrir os widgets + o schema de settings de cada um**
+  (`list_elements` / `get_element_schema`).
 
 ---
 
@@ -158,6 +159,8 @@ Já entregue:
 - **0.2.0** — `SKILL.md` embutido + URL pública da skill por instalação.
 - **0.3.0** — Elemento de código com assinatura manual (a IA cria, o humano
   assina no Bricks).
+- **0.4.0** — Introspecção de widgets: `list_elements` + `get_element_schema`
+  (descobre o schema de settings de qualquer elemento do site).
 
 Planejado para versões futuras (sujeito a ajustes):
 

@@ -178,6 +178,14 @@ Exemplo de `conditions`: `[{ "main": "any" }]` ou
 | `get_capabilities` | — | Ambiente: versão do Bricks, modo de CSS, breakpoints, flags | — |
 | `validate_tree` | `elements` | Valida integridade/IDs/anti-RCE (dry-run, não grava) | — |
 | `regenerate_css` | `post_id?` | Força regeneração de CSS (modo External Files) | `edit_theme_options` |
+| `list_elements` | — | Lista todos os widgets registrados no site (nome, label, categoria, nestable) — inclui Pro e de terceiros | `edit_pages` |
+| `get_element_schema` | `name`, `include_css?` | Retorna o **schema de settings** de um widget (tipos, defaults, opções), lido da definição do elemento | `edit_pages` |
+
+> **Descobrir os settings de um widget:** use `list_elements` para ver os nomes
+> e `get_element_schema` para o schema de cada um — assim você sabe exatamente
+> quais settings um `form`, `slider-nested`, `accordion-nested`, `posts` etc.
+> aceitam, sem precisar montar no editor antes. As chaves com prefixo `_`
+> (`_typography`, `_padding`…) são settings universais comuns a todos.
 
 ---
 
@@ -190,6 +198,8 @@ Exemplo de `conditions`: `[{ "main": "any" }]` ou
 - Inserir/mover/duplicar/excluir elementos individualmente.
 - Ler e criar classes globais; ler paleta, theme styles e fontes.
 - Validar uma árvore antes de gravar.
+- **Descobrir os widgets disponíveis e o schema de settings de cada um**
+  (`list_elements` / `get_element_schema`).
 
 **Código — pode criar, mas o usuário assina (importante):**
 - O elemento `code` é controlado pelo toggle **"Bloquear elementos de código"**

@@ -10,6 +10,30 @@ o header `Version:` do arquivo principal, o `Stable tag:` do `readme.txt` e
 uma nova entrada neste arquivo (espelhada na seção `== Changelog ==` do
 `readme.txt`).
 
+## [0.4.0] - 2026-06-29
+
+### Adicionado
+- **Introspecção de widgets.** Duas novas tools MCP:
+  - `list_elements` — lista todos os elementos/widgets registrados no site
+    (nome, label, categoria, nestable), incluindo Bricks Pro e elementos de
+    terceiros.
+  - `get_element_schema` — retorna o **schema de settings** de um widget
+    (tipos de controle, defaults, opções, grupos), lido direto do
+    `set_controls()` da classe do elemento.
+- Assim a IA descobre exatamente quais settings um `form`, `slider-nested`,
+  `accordion-nested`, `posts`, etc. aceitam, **sem precisar montar no editor
+  antes**.
+
+### Implementação
+- Novo `Element_Inspector` (`includes/bricks/class-element-inspector.php`):
+  lê `\Bricks\Elements::$elements`, instancia cada elemento e chama apenas
+  `set_control_groups()` + `set_controls()` (nunca `load()`/`init()`), tudo em
+  try/catch — somente leitura, sem efeitos colaterais de render.
+
+### Motivação
+- O Paulo perguntou se dava para descobrir o schema de settings de cada widget.
+  Dá — o Bricks expõe os controles na própria classe do elemento.
+
 ## [0.3.0] - 2026-06-29
 
 ### Adicionado
@@ -109,6 +133,7 @@ uma nova entrada neste arquivo (espelhada na seção `== Changelog ==` do
   para gerar/rotacionar/revogar token, definir o usuário de serviço, ver a URL
   do endpoint e ajustar as proteções.
 
+[0.4.0]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.3.0]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.2.0]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.1.0]: https://marreiradigital.com.br/marreira-mcp-bricks

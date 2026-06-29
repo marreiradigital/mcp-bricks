@@ -12,6 +12,7 @@ use Marreira\MCP_Bricks\Bricks\Bricks_Gateway;
 use Marreira\MCP_Bricks\Bricks\Css_Regenerator;
 use Marreira\MCP_Bricks\Bricks\Element_Tree;
 use Marreira\MCP_Bricks\Bricks\Code_Guard;
+use Marreira\MCP_Bricks\Bricks\Element_Inspector;
 use Marreira\MCP_Bricks\Security\Sanitizer;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -65,6 +66,32 @@ class Util_Tools extends Base_Tools {
 				)
 			),
 			array( __CLASS__, 'regenerate_css' )
+		);
+
+		$registry->register(
+			'list_elements',
+			__( 'Lista todos os elementos/widgets do Bricks registrados neste site (inclui Pro e de terceiros): nome, label, categoria, se e nestable.', 'marreira-mcp-bricks' ),
+			self::schema( array() ),
+			array( __CLASS__, 'list_elements' )
+		);
+
+		$registry->register(
+			'get_element_schema',
+			__( 'Retorna o schema de settings de um widget do Bricks (tipos, defaults, opcoes), lido direto da definicao do elemento. Use para saber quais settings um widget aceita.', 'marreira-mcp-bricks' ),
+			self::schema(
+				array(
+					'name'        => array(
+						'type'        => 'string',
+						'description' => 'Nome do elemento (ex.: heading, button, form, slider-nested). Veja list_elements.',
+					),
+					'include_css' => array(
+						'type'        => 'boolean',
+						'description' => 'Se true, inclui o mapeamento CSS de cada controle. Padrao: false.',
+					),
+				),
+				array( 'name' )
+			),
+			array( __CLASS__, 'get_element_schema' )
 		);
 	}
 
@@ -146,5 +173,57 @@ class Util_Tools extends Base_Tools {
 		$post_id = isset( $args['post_id'] ) ? (int) $args['post_id'] : null;
 		$result  = Css_Regenerator::regenerate( $post_id );
 		return Tool_Registry::success_result( $result, __( 'Regeneracao de CSS solicitada.', 'marreira-mcp-bricks' ) );
+	}
+
+	/**
+	 * Handler: list_elements.
+	 *
+	 * @param array $args Argumentos.
+	 * @return array
+	 */
+	public static function list_elements( array $args ) {
+		$bricks = self::require_bricks();
+		if ( $bricks ) {
+			return $bricks;
+		}
+		$cap = self::require_cap( 'edit_pages' );
+		if ( $cap ) {
+			return $cap;
+		}
+		$elements = Element_Inspector::list_all();
+		return Tool_Registry::success_result(
+			array(
+				'count'    => count( $elements ),
+				'elements' => $elements,
+			)
+		);
+	}
+
+	/**
+	 * Handler: get_element_schema.
+	 *
+	 * @param array $args Argumentos.
+	 * @return array
+	 */
+	public static function get_element_schema( array $args ) {
+		$bricks = self::require_bricks();
+		if ( $bricks ) {
+			return $bricks;
+		}
+		$cap = self::require_cap( 'edit_pages' );
+		if ( $cap ) {
+			return $cap;
+		}
+
+		$name = isset( $args['name'] ) ? (string) $args['name'] : '';
+		if ( '' === $name ) {
+			return Tool_Registry::error_result( __( 'Informe o "name" do elemento.', 'marreira-mcp-bricks' ) );
+		}
+
+		$schema = Element_Inspector::get_schema( $name, ! empty( $args['include_css'] ) );
+		if ( is_wp_error( $schema ) ) {
+			return self::from_error( $schema );
+		}
+		return Tool_Registry::success_result( $schema );
 	}
 }

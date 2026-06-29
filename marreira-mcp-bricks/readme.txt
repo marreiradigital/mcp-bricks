@@ -4,7 +4,7 @@ Tags: bricks, mcp, ai, page builder, rest api
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.3.0
+Stable tag: 0.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,11 @@ Nao. Por padrao, o plugin recusa qualquer elemento ou configuracao que execute c
 No modo de CSS inline (padrao do Bricks) nao e necessario. No modo External Files, o plugin tenta regenerar automaticamente e expoe a tool `regenerate_css`.
 
 == Changelog ==
+
+= 0.4.0 =
+* Novas tools: list_elements (lista todos os widgets registrados, incluindo Pro e de terceiros) e get_element_schema (schema de settings de um widget: tipos, defaults, opcoes).
+* A IA passa a descobrir os settings de qualquer elemento direto da definicao do Bricks, sem precisar montar no editor antes.
+* Somente leitura e seguro: introspeccao via set_controls() com try/catch (nunca dispara render).
 
 = 0.3.0 =
 * Elemento de codigo: agora pode ser criado pela IA quando o toggle "Bloquear elementos de codigo" estiver DESLIGADO, porem SEM assinatura (o Bricks nao executa codigo nao-assinado).
