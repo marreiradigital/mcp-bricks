@@ -10,6 +10,20 @@ o header `Version:` do arquivo principal, o `Stable tag:` do `readme.txt` e
 uma nova entrada neste arquivo (espelhada na seção `== Changelog ==` do
 `readme.txt`).
 
+## [0.5.0] - 2026-06-29
+
+### Alterado
+- **Painel administrativo redesenhado** com visual high-tech / "cara de IA":
+  tema escuro, cards de vidro (glass), gradientes índigo→violeta, glow/neon,
+  fundo dot-grid com brilhos radiais animados (respeita `prefers-reduced-motion`).
+- **Largura 100% do viewport** — removido o limite de largura que deixava o
+  conteúdo "preso" e alinhado à esquerda; grids agora preenchem a tela inteira
+  (auto-fit).
+- **Contraste cuidado (WCAG AA)**: paleta de texto/fundo escolhida para
+  legibilidade (texto claro ~8–16:1 sobre os fundos; accents neon só onde têm
+  contraste suficiente).
+- Mantém o painel **100% AJAX** (sem reloads) — apenas a camada visual mudou.
+
 ## [0.4.0] - 2026-06-29
 
 ### Adicionado
@@ -133,6 +147,7 @@ uma nova entrada neste arquivo (espelhada na seção `== Changelog ==` do
   para gerar/rotacionar/revogar token, definir o usuário de serviço, ver a URL
   do endpoint e ajustar as proteções.
 
+[0.5.0]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.4.0]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.3.0]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.2.0]: https://marreiradigital.com.br/marreira-mcp-bricks
