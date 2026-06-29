@@ -1,0 +1,204 @@
+/**
+ * MarreiraMCP Bricks — admin UI no estilo do Bricks Builder (tema escuro).
+ * Escopo: .mmb-builder. Mobile-first, responsivo e acessivel.
+ */
+
+.mmb-builder *,
+.mmb-builder *::before,
+.mmb-builder *::after { box-sizing: border-box; }
+
+.mmb-builder {
+	--mmb-canvas: #131516;
+	--mmb-panel: #1c1f20;
+	--mmb-panel-2: #23282a;
+	--mmb-border: #313738;
+	--mmb-text: #e7eaeb;
+	--mmb-muted: #969c9e;
+	--mmb-accent: #3a8bfd;
+	--mmb-accent-hover: #579cff;
+	--mmb-success: #2bd576;
+	--mmb-danger: #ef5a52;
+	--mmb-radius: 8px;
+
+	margin: 20px 20px 40px 0;
+	max-width: 980px;
+	color: var(--mmb-text);
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+/* Remove o chrome claro do WP dentro do nosso container. */
+.mmb-builder a { color: var(--mmb-accent); }
+.mmb-builder a:hover { color: var(--mmb-accent-hover); }
+
+/* Barra superior tipo builder. */
+.mmb-topbar {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	background: var(--mmb-canvas);
+	border: 1px solid var(--mmb-border);
+	border-radius: var(--mmb-radius);
+	padding: 14px 18px;
+	flex-wrap: wrap;
+}
+.mmb-logo {
+	width: 34px;
+	height: 34px;
+	flex: 0 0 34px;
+	border-radius: 7px;
+	background: linear-gradient(135deg, var(--mmb-accent), #7b5cff);
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	gap: 3px;
+	padding: 7px;
+}
+.mmb-logo span { background: rgba(255, 255, 255, 0.92); border-radius: 1px; }
+.mmb-title { margin: 0; font-size: 17px; font-weight: 600; color: #fff; line-height: 1.2; }
+.mmb-subtitle { margin: 2px 0 0; font-size: 12.5px; color: var(--mmb-muted); }
+.mmb-badge {
+	margin-left: auto;
+	font-size: 12px;
+	font-weight: 600;
+	padding: 4px 10px;
+	border-radius: 999px;
+	border: 1px solid var(--mmb-border);
+	color: var(--mmb-muted);
+	white-space: nowrap;
+}
+.mmb-badge.is-on { color: var(--mmb-success); border-color: rgba(43, 213, 118, 0.4); }
+.mmb-badge.is-off { color: var(--mmb-danger); border-color: rgba(239, 90, 82, 0.4); }
+
+/* Cartoes/paineis. */
+.mmb-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 16px; }
+.mmb-card {
+	background: var(--mmb-panel);
+	border: 1px solid var(--mmb-border);
+	border-radius: var(--mmb-radius);
+	padding: 18px 20px;
+	overflow-wrap: anywhere;
+}
+.mmb-card h2 {
+	margin: 0 0 4px;
+	font-size: 14px;
+	font-weight: 600;
+	color: #fff;
+	letter-spacing: 0.2px;
+	text-transform: uppercase;
+}
+.mmb-card .mmb-hint { margin: 0 0 14px; color: var(--mmb-muted); font-size: 12.5px; }
+.mmb-field { margin: 14px 0; }
+.mmb-field > label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--mmb-text); }
+.mmb-field .description { color: var(--mmb-muted); font-size: 12.5px; margin-top: 6px; }
+
+/* Bloco de codigo monospace. */
+.mmb-code {
+	display: block;
+	width: 100%;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 13px;
+	background: var(--mmb-panel-2);
+	border: 1px solid var(--mmb-border);
+	border-radius: 6px;
+	padding: 11px 12px;
+	color: #d6e4ff;
+	word-break: break-all;
+	overflow-wrap: anywhere;
+}
+.mmb-code.is-token { color: #b9f5cf; border-color: rgba(43, 213, 118, 0.45); background: rgba(43, 213, 118, 0.07); }
+.mmb-copy-row { display: flex; gap: 8px; align-items: stretch; }
+.mmb-copy-row .mmb-code { flex: 1 1 auto; }
+
+/* Inputs. */
+.mmb-builder input[type="number"],
+.mmb-builder select {
+	background: var(--mmb-panel-2);
+	border: 1px solid var(--mmb-border);
+	border-radius: 6px;
+	color: var(--mmb-text);
+	padding: 8px 10px;
+	font-size: 16px; /* evita zoom no iOS */
+	min-height: 40px;
+	max-width: 100%;
+}
+.mmb-builder select { min-width: 240px; }
+.mmb-builder input[type="number"] { width: 110px; }
+.mmb-builder input:focus,
+.mmb-builder select:focus { outline: 2px solid var(--mmb-accent); outline-offset: 1px; border-color: var(--mmb-accent); }
+
+/* Toggle (switch) estilo builder. */
+.mmb-toggle { display: flex; align-items: center; gap: 12px; cursor: pointer; min-height: 44px; }
+.mmb-toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
+.mmb-switch {
+	flex: 0 0 44px;
+	position: relative;
+	width: 44px;
+	height: 24px;
+	background: #3a4042;
+	border-radius: 999px;
+	transition: background 0.2s ease;
+}
+.mmb-switch::after {
+	content: "";
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background: #fff;
+	transition: transform 0.2s ease;
+}
+.mmb-toggle input:checked + .mmb-switch { background: var(--mmb-accent); }
+.mmb-toggle input:checked + .mmb-switch::after { transform: translateX(20px); }
+.mmb-toggle input:focus-visible + .mmb-switch { outline: 2px solid var(--mmb-accent); outline-offset: 2px; }
+.mmb-toggle .mmb-toggle-label { font-weight: 600; }
+.mmb-toggle .mmb-toggle-sub { display: block; font-weight: 400; color: var(--mmb-muted); font-size: 12.5px; }
+
+/* Botoes. */
+.mmb-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.mmb-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	min-height: 44px;
+	padding: 0 18px;
+	border-radius: 6px;
+	border: 1px solid var(--mmb-border);
+	background: var(--mmb-panel-2);
+	color: var(--mmb-text);
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	text-decoration: none;
+	transition: background 0.15s ease, border-color 0.15s ease;
+}
+.mmb-btn:hover { background: #2c3133; color: #fff; }
+.mmb-btn-primary { background: var(--mmb-accent); border-color: var(--mmb-accent); color: #fff; }
+.mmb-btn-primary:hover { background: var(--mmb-accent-hover); border-color: var(--mmb-accent-hover); color: #fff; }
+.mmb-btn-danger { color: var(--mmb-danger); }
+.mmb-btn-danger:hover { background: rgba(239, 90, 82, 0.12); border-color: var(--mmb-danger); color: #fff; }
+
+/* Notice de token recem-gerado. */
+.mmb-flash {
+	border: 1px solid rgba(43, 213, 118, 0.5);
+	background: rgba(43, 213, 118, 0.08);
+	border-radius: var(--mmb-radius);
+	padding: 16px 20px;
+	margin-top: 16px;
+}
+.mmb-flash h2 { color: var(--mmb-success); }
+
+.mmb-status-line { color: var(--mmb-muted); font-size: 12.5px; margin: 10px 0 0; }
+
+/* Responsividade. */
+@media (min-width: 860px) {
+	.mmb-grid { grid-template-columns: 1fr 1fr; }
+	.mmb-card.mmb-span-2 { grid-column: 1 / -1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.mmb-builder * { transition: none !important; }
+}
