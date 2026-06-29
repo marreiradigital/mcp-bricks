@@ -4,7 +4,7 @@
 
 **Servidor MCP para criar e editar páginas do Bricks Builder com IA — de forma nativa, segura e reversível.**
 
-[![Versão](https://img.shields.io/badge/versão-0.2.0-3a8bfd.svg)](marreira-mcp-bricks/CHANGELOG.md)
+[![Versão](https://img.shields.io/badge/versão-0.3.0-3a8bfd.svg)](marreira-mcp-bricks/CHANGELOG.md)
 [![WordPress](https://img.shields.io/badge/WordPress-6.4%2B-21759b.svg)](https://wordpress.org/)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-777bb4.svg)](https://www.php.net/)
 [![Bricks](https://img.shields.io/badge/Bricks%20Builder-requerido-ff5a52.svg)](https://bricksbuilder.io/)
@@ -156,6 +156,8 @@ Já entregue:
 
 - **0.1.0** — Menu próprio + painel 100% AJAX (estilo Bricks).
 - **0.2.0** — `SKILL.md` embutido + URL pública da skill por instalação.
+- **0.3.0** — Elemento de código com assinatura manual (a IA cria, o humano
+  assina no Bricks).
 
 Planejado para versões futuras (sujeito a ajustes):
 
@@ -196,8 +198,15 @@ Sugestões, issues e PRs são bem-vindos. Antes de contribuir:
 
 ## 📄 Licença
 
-Distribuído sob **GPL-2.0-or-later**. Veja o cabeçalho do plugin e o
-[readme.txt](marreira-mcp-bricks/readme.txt).
+**Software livre e gratuito.** Você pode **usar, copiar, modificar e distribuir**
+este plugin à vontade — inclusive em projetos comerciais — **desde que mantenha
+os devidos créditos** ao autor original (**Paulo Marreira / Marreira Digital**).
+
+Formalmente licenciado sob **GPL-2.0-or-later** (exigência do diretório
+WordPress.org), que já garante essas liberdades e a preservação dos avisos de
+autoria/licença ao redistribuir. Mantenha o cabeçalho do plugin e este crédito.
+
+Resumo: faça o que quiser com o código, só **dê o crédito**. 🙌
 
 ---
 
