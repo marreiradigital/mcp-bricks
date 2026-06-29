@@ -16,4 +16,4 @@ Thumbs.db
 
 # Empacotamento
 /dist/
-*.zip
+#*.zip
