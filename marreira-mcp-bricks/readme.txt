@@ -4,7 +4,7 @@ Tags: bricks, mcp, ai, page builder, rest api
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.5.0
+Stable tag: 0.5.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,10 @@ Nao. Por padrao, o plugin recusa qualquer elemento ou configuracao que execute c
 No modo de CSS inline (padrao do Bricks) nao e necessario. No modo External Files, o plugin tenta regenerar automaticamente e expoe a tool `regenerate_css`.
 
 == Changelog ==
+
+= 0.5.1 =
+* Corrige a largura do painel: remove o scroll horizontal e o espaco vazio a esquerda. O painel agora ocupa de fato 100% da largura util (box-sizing no container, width auto + margin negativa para comer a calha do #wpcontent) sem estourar.
+* Grids do painel protegidos contra overflow em larguras estreitas (minmax com min(100%, X)).
 
 = 0.5.0 =
 * Painel administrativo redesenhado: visual high-tech/IA (tema escuro, vidro, gradientes, glow, dot-grid), largura 100% do viewport (sem cap alinhado a esquerda) e contraste AA cuidado (texto x fundo). Continua 100% AJAX.

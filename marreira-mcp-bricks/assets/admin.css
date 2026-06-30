@@ -31,12 +31,17 @@
 	line-height: 1.55;
 	-webkit-font-smoothing: antialiased;
 
-	/* Full-bleed: ocupa toda a largura do conteúdo (sem cap à esquerda) e
-	   a altura do viewport. */
-	width: 100%;
-	margin: -10px 0 -65px 0;
+	/* Full-bleed: ocupa toda a largura útil do admin — "come" a calha de 20px
+	   do #wpcontent à esquerda (margin-left negativa) e vai até a borda direita
+	   (margin-right 0), SEM gerar scroll horizontal.
+	   box-sizing aqui é essencial: o seletor `*` acima só atinge os filhos,
+	   então sem isto o padding lateral estouraria a largura. width:auto (não
+	   100%) evita somar a margem negativa à largura e criar overflow. */
+	box-sizing: border-box;
+	width: auto;
+	margin: -10px 0 -65px -20px;
 	min-height: calc(100vh - var(--wp-admin--admin-bar--height, 32px));
-	padding: clamp(20px, 2.6vw, 44px) clamp(16px, 2.4vw, 40px) 80px;
+	padding: clamp(20px, 2.6vw, 44px) clamp(18px, 2.2vw, 40px) 80px;
 	overflow-x: hidden;
 	position: relative;
 	isolation: isolate;
@@ -132,7 +137,7 @@
 
 /* ---- Cards de vidro ---- */
 .mmb-grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
-.mmb-grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); }
+.mmb-grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); }
 .mmb-card.mmb-span-2 { grid-column: 1 / -1; }
 .mmb-card {
 	position: relative;
@@ -157,7 +162,7 @@
 .mmb-card .mmb-hint { margin: 0 0 16px; color: var(--muted); font-size: 13px; }
 
 /* ---- Stat cards ---- */
-.mmb-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; }
+.mmb-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 16px; }
 .mmb-stat {
 	background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
 	border: 1px solid var(--stroke); border-radius: 15px;
@@ -247,7 +252,7 @@
 .mmb-flash h2 { margin: 0 0 6px; color: #6ee7b7; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
 
 /* ---- Catálogo de ferramentas ---- */
-.mmb-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.mmb-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 14px; }
 .mmb-tool {
 	background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
 	border: 1px solid var(--stroke); border-radius: 13px; padding: 15px 17px; transition: border-color .15s, box-shadow .15s, transform .15s;

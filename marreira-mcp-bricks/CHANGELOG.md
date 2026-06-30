@@ -10,6 +10,16 @@ o header `Version:` do arquivo principal, o `Stable tag:` do `readme.txt` e
 uma nova entrada neste arquivo (espelhada na seção `== Changelog ==` do
 `readme.txt`).
 
+## [0.5.1] - 2026-06-29
+
+### Corrigido
+- **Largura do painel admin.** Eliminado o **scroll horizontal** e o **espaço
+  vazio à esquerda**: o container `.mmb-app` ganhou `box-sizing: border-box`
+  (o seletor `*` só atingia os filhos) e passou a usar `width: auto` +
+  `margin-left: -20px` para "comer" a calha de 20px do `#wpcontent` e ocupar
+  100% da largura útil sem estourar. Grids passam a usar `minmax(min(100%, X),
+  1fr)` para nunca transbordar em larguras estreitas.
+
 ## [0.5.0] - 2026-06-29
 
 ### Alterado
@@ -147,6 +157,8 @@ uma nova entrada neste arquivo (espelhada na seção `== Changelog ==` do
   para gerar/rotacionar/revogar token, definir o usuário de serviço, ver a URL
   do endpoint e ajustar as proteções.
 
+[0.5.0]: https://marreiradigital.com.br/marreira-mcp-bricks
+[0.5.1]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.5.0]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.4.0]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.3.0]: https://marreiradigital.com.br/marreira-mcp-bricks
