@@ -3,7 +3,7 @@
  * Plugin Name:       MarreiraMCP Bricks
  * Plugin URI:        https://marreiradigital.com.br/marreira-mcp-bricks
  * Description:        Servidor MCP (Model Context Protocol) para criar e editar paginas e templates do Bricks Builder de forma nativa via IA, com seguranca por token e endpoints ocultos do indice publico do REST.
- * Version:           0.5.1
+ * Version:           0.5.2
  * Requires at least: 6.4
  * Requires PHP:      7.4
  * Author:            Paulo Marreira
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // ---------------------------------------------------------------------------
 // Constantes do plugin.
 // ---------------------------------------------------------------------------
-define( 'MMB_VERSION', '0.5.1' );
+define( 'MMB_VERSION', '0.5.2' );
 define( 'MMB_PLUGIN_FILE', __FILE__ );
 define( 'MMB_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MMB_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

@@ -27,6 +27,9 @@
 	--radius: 16px;
 
 	color: var(--text);
+	/* Faz os controles nativos (select/option, scrollbars) renderizarem em
+	   modo escuro com contraste adequado. */
+	color-scheme: dark;
 	font-size: 14px;
 	line-height: 1.55;
 	-webkit-font-smoothing: antialiased;
@@ -187,6 +190,8 @@
 	color: var(--text); padding: 10px 12px; font-size: 16px; min-height: 44px; max-width: 100%;
 }
 .mmb-app select { min-width: 240px; }
+/* Contraste da lista nativa do select (opções legíveis no tema escuro). */
+.mmb-app select option { background: #0c1320; color: var(--text); }
 .mmb-app input[type="number"] { width: 120px; }
 .mmb-app input:focus, .mmb-app select:focus, .mmb-app input[type="search"]:focus {
 	outline: none; border-color: var(--cyan);
@@ -201,8 +206,11 @@
 	box-shadow: inset 0 0 30px -18px rgba(70, 227, 255, 0.5);
 }
 .mmb-code.is-token { color: #9af5c8; border-color: rgba(52, 211, 153, 0.45); box-shadow: inset 0 0 30px -16px rgba(52, 211, 153, 0.5); }
-.mmb-copy-row { display: flex; gap: 8px; align-items: stretch; }
+/* O botão fica na altura natural (no topo), não estica junto com blocos de
+   código altos como o exemplo cURL. */
+.mmb-copy-row { display: flex; gap: 8px; align-items: flex-start; }
 .mmb-copy-row .mmb-code { flex: 1 1 auto; min-width: 0; }
+.mmb-copy-row .mmb-btn { flex: 0 0 auto; }
 
 /* ---- Toggle ---- */
 .mmb-toggle { display: flex; align-items: flex-start; gap: 14px; cursor: pointer; min-height: 44px; padding: 8px 0; }

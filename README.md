@@ -4,7 +4,7 @@
 
 **Servidor MCP para criar e editar páginas do Bricks Builder com IA — de forma nativa, segura e reversível.**
 
-[![Versão](https://img.shields.io/badge/versão-0.5.1-3a8bfd.svg)](marreira-mcp-bricks/CHANGELOG.md)
+[![Versão](https://img.shields.io/badge/versão-0.5.2-3a8bfd.svg)](marreira-mcp-bricks/CHANGELOG.md)
 [![WordPress](https://img.shields.io/badge/WordPress-6.4%2B-21759b.svg)](https://wordpress.org/)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-777bb4.svg)](https://www.php.net/)
 [![Bricks](https://img.shields.io/badge/Bricks%20Builder-requerido-ff5a52.svg)](https://bricksbuilder.io/)
@@ -162,15 +162,17 @@ Já entregue:
 - **0.4.0** — Introspecção de widgets: `list_elements` + `get_element_schema`
   (descobre o schema de settings de qualquer elemento do site).
 - **0.5.0** — Painel redesenhado (high-tech, full-width, contraste AA).
+- **0.5.1** — Correção de largura do painel (sem scroll horizontal nem vão à
+  esquerda).
+- **0.5.2** — Ajustes de UI (botões "Copiar" na altura natural; contraste do
+  select de usuário).
 
 Planejado para versões futuras (sujeito a ajustes):
 
-- **0.3.x** — Escrita de paleta de cores e theme styles; upload/gestão de fontes.
-- **0.4.x** — Componentes Bricks (criar/instanciar) e variáveis globais.
-- **0.5.x** — Custom Post Types e taxonomias sob demanda para a IA.
-- **0.6.x** — Tabelas personalizadas e campos customizáveis refletindo nas
-  páginas.
-- **0.7.x** — Funções de tema seguras e dynamic data tags personalizadas.
+- **0.6.x** — Escrita de paleta de cores e theme styles; upload/gestão de fontes.
+- **0.7.x** — Componentes Bricks (criar/instanciar) e variáveis globais.
+- **0.8.x** — Custom Post Types e taxonomias sob demanda para a IA.
+- **0.9.x** — Tabelas personalizadas, campos customizáveis e dynamic data tags.
 - **1.0.0** — Estabilização, cobertura de testes e publicação no diretório
   WordPress.org.
 
@@ -181,7 +183,7 @@ Planejado para versões futuras (sujeito a ajustes):
 
 ## 🧾 Versionamento & Changelog
 
-- Versão atual: **0.0.1**.
+- Versão atual: **0.5.2**.
 - Toda alteração incrementa a versão e é documentada no
   [CHANGELOG](marreira-mcp-bricks/CHANGELOG.md).
 - O `Stable tag` do `readme.txt`, o header do plugin e o changelog ficam sempre

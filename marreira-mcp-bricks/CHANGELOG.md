@@ -10,6 +10,15 @@ o header `Version:` do arquivo principal, o `Stable tag:` do `readme.txt` e
 uma nova entrada neste arquivo (espelhada na seção `== Changelog ==` do
 `readme.txt`).
 
+## [0.5.2] - 2026-06-29
+
+### Corrigido
+- **UI do painel.** Os botões "Copiar" não esticam mais junto com blocos de
+  código altos (ex.: exemplo cURL) — ficam na altura natural, no topo
+  (`align-items: flex-start`). O `<select>` de usuário de serviço ganhou
+  contraste adequado no tema escuro (`color-scheme: dark` + estilo das
+  `option`), deixando a lista nativa legível.
+
 ## [0.5.1] - 2026-06-29
 
 ### Corrigido
@@ -158,6 +167,7 @@ uma nova entrada neste arquivo (espelhada na seção `== Changelog ==` do
   do endpoint e ajustar as proteções.
 
 [0.5.0]: https://marreiradigital.com.br/marreira-mcp-bricks
+[0.5.2]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.5.1]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.5.0]: https://marreiradigital.com.br/marreira-mcp-bricks
 [0.4.0]: https://marreiradigital.com.br/marreira-mcp-bricks

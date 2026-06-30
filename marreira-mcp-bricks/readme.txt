@@ -4,7 +4,7 @@ Tags: bricks, mcp, ai, page builder, rest api
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.5.1
+Stable tag: 0.5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,10 @@ Nao. Por padrao, o plugin recusa qualquer elemento ou configuracao que execute c
 No modo de CSS inline (padrao do Bricks) nao e necessario. No modo External Files, o plugin tenta regenerar automaticamente e expoe a tool `regenerate_css`.
 
 == Changelog ==
+
+= 0.5.2 =
+* UI: botoes "Copiar" deixam de esticar na altura dos blocos de codigo (ex.: exemplo cURL) — agora ficam na altura natural no topo.
+* UI: contraste do select de usuario corrigido (color-scheme: dark + estilo das options), deixando a lista nativa legivel no tema escuro.
 
 = 0.5.1 =
 * Corrige a largura do painel: remove o scroll horizontal e o espaco vazio a esquerda. O painel agora ocupa de fato 100% da largura util (box-sizing no container, width auto + margin negativa para comer a calha do #wpcontent) sem estourar.
